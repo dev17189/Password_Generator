@@ -19,7 +19,11 @@ from django.urls import path,include
 from Creator.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login',login_page,name="home"),
+    path('login_page',login_page,name="login"),
     path('signup', signup, name="signup"),
     path('create',create_pass, name='create'),
+    path('logout',logout_page, name="logout_page"),
+    path('delete_rec/<id>/',delete_rec, name="delete_rec"),
+    # path('my_view/', my_view, name="my_view"),
+    # path('update_rec/<id>/',update_rec, name="update_rec"),
 ]

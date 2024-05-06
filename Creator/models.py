@@ -7,5 +7,6 @@ class client(models.Model):
     user=models.ForeignKey(User, on_delete=models.SET_NULL , null=True,blank=True)
     description=models.CharField(max_length=100)
     timestamp=models.DateTimeField(default=timezone.now())
-    # username=models.CharField(max_length=20)
+    username=models.CharField(max_length=20,default=None,null=True)
     password=models.CharField(max_length=20)
+    encryption_key = models.BinaryField(max_length=32,null=True)
