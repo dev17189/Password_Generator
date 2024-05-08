@@ -2,7 +2,7 @@
 {% block body %}
 
 {% load static %}
-<h1> hello, {{user.username}}</h1>
+<h1> Welcome, {{user.username}}</h1>
 <div class="container mt-5">
 <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -11,7 +11,10 @@
     <label for="exampleFormControlTextarea1" class="form-label">For what?</label>
     <textarea class="form-control" name="receipe_description"></textarea>
   </div>
-  
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Username(if any)</label>
+    <textarea class="form-control" name="in_user"></textarea>
+  </div>
   <input type="hidden" name="username" class="form-control" id="exampleInput" value="{{user.username}}">
   <button type="submit" class="btn btn-success">Generate</button>
 </form>
@@ -20,25 +23,29 @@
 <table class="table mt-5">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <!-- <th scope="col">#</th> -->
       <th scope="col">Description</th>
+      <th scope="col">Username</th>
       <th scope="col">Timestamp</th>
       <th scope="col">Password</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
+    {% with counter=0 %}
     {% for rec in clients %}
     <tr>
       {% if rec.username == user.username %}
-      <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ rec.description }}</td>
+      <!-- {{ counter|add:1 }} -->
+      <!-- <th scope="row">{{ counter|add:1 }}</th> -->
+      <td><b>{{ rec.description }}</b></td>
+      <td>{{ rec.in_user }}</td>
       <td>{{ rec.timestamp }}</td>
       <td>{{ rec.decrypted_password }}</td>
       <!-- <td><img src="/media/{{ rec.receipe_image }}" style="height:200px"></td> -->
       <td>
         <a href="/delete_rec/{{ rec.id }}/" class="btn btn-danger m-2">Delete</a>
-        <a href="/update_rec/{{ rec.id }}/" class="btn btn-success m-2">Update</a>
+        <!-- <a href="/update_rec/{{ rec.id }}/" class="btn btn-success m-2">Update</a> -->
       </td>
       {% endif %}
     </tr>
@@ -48,4 +55,5 @@
 </table>
 <!-- {{Receipe}} -->
 </div>
+{% endwith %}
   {% endblock %}

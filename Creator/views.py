@@ -7,8 +7,9 @@ from cryptography.fernet import Fernet
 import random
 import array
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
-# Utility functions for encryption and password generation
+
 def generate_key():
     return Fernet.generate_key()
 
@@ -49,31 +50,25 @@ def generate_password():
         password = password + x
     return password
 
-# View functions
-# def my_view(request):
-#     clients = client.objects.all()
-
-#     for rec in clients:
-#         rec.decrypted_password = decrypt_password(rec.encryption_key, rec.password)
-
-#     return render(request, 'create_pas.html', {'rec': rec})
-
+@login_required(login_url='/login_page')
 def create_pass(request):
     if request.method == "POST":
         data = request.POST
         description = data.get('receipe_description')
+        timestamp=datetime.now()
         username = request.POST.get('username')
+        in_user = request.POST.get('in_user')
         password = generate_password()
         encryption_key = generate_key()
         encrypted_password = encrypt_password(encryption_key, password)
 
-        client.objects.create(description=description, password=encrypted_password, username=username,encryption_key=encryption_key)
+        client.objects.create(description=description,timestamp=timestamp, password=encrypted_password, username=username,encryption_key=encryption_key,in_user=in_user)
         return redirect('/create')
 
     queryset = client.objects.all()
     for cli in queryset:
         decrypted_password = decrypt_password(cli.encryption_key, cli.password)
-        setattr(client, 'decrypted_password', decrypted_password)
+        setattr(cli, 'decrypted_password', decrypted_password)
     context = {'clients': queryset}
     return render(request, 'create_pass.html', context)
 

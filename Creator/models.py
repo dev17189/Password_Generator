@@ -10,3 +10,4 @@ class client(models.Model):
     username=models.CharField(max_length=20,default=None,null=True)
     password=models.CharField(max_length=20)
     encryption_key = models.BinaryField(max_length=32,null=True)
+    in_user=models.TextField(null=True, blank=True)
